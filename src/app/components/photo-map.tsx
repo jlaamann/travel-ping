@@ -11,7 +11,7 @@ const PhotoMap = () => {
 
   return (
     <Map
-      style="mapbox://styles/mapbox/streets-v9"
+      style="mapbox://styles/chkchkchkooh/cllzdmzqi00o001qxgwjg8t6p"
       containerStyle={{
         height: "100vh",
         width: "100vw",
