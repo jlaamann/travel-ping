@@ -27,6 +27,26 @@ const Map = () => {
       projection: "mercator",
     });
 
+    const locations = [
+      {
+        coordinates: [-0.118092, 51.509865],
+        imageUrl:
+          "https://images.contentstack.io/v3/assets/blt00454ccee8f8fe6b/bltf5fca6a3eec4d180/6139d40bec680b43eb02a9ee/US_London_UK_Header.jpg?width=1920&quality=70&auto=webp",
+        description: "Having a blast in London, long live the queen",
+      },
+      {
+        coordinates: [-99, 19],
+        imageUrl:
+          "https://assets3.thrillist.com/v1/image/3141329/2880x1620/crop;webp=auto;jpeg_quality=60;progressive.jpg",
+        description: "Drank to many glasses of mezcal yesterday",
+      },
+      {
+        coordinates: [115, -8],
+        imageUrl: "https://balicheapesttours.com/dummy/ubud.jpg",
+        description: "Finding myself in Ubud",
+      },
+    ];
+
     map.on("load", () => {
       map.loadImage(markerImage, function (error, image) {
         if (error) throw error;
@@ -36,18 +56,20 @@ const Map = () => {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: [
-              {
+            features: locations.map(
+              ({ coordinates, imageUrl, description }) => ({
                 type: "Feature",
                 properties: {
                   message: "Foo",
+                  description,
+                  imageUrl,
                 },
                 geometry: {
                   type: "Point",
-                  coordinates: [-0.118092, 51.509865],
+                  coordinates,
                 },
-              },
-            ],
+              })
+            ),
           },
         });
         // Add a symbol layer
@@ -68,6 +90,35 @@ const Map = () => {
       });
 
       setMap(map);
+    });
+
+    map.on("click", "points", (e) => {
+      // Copy coordinates array.
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const description = e.features[0].properties.description;
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      const imageHtml = `<img src="${e.features[0].properties.imageUrl}">`;
+
+      new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(imageHtml + description)
+        .addTo(map);
+    });
+
+    map.on("mouseenter", "points", () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on("mouseleave", "points", () => {
+      map.getCanvas().style.cursor = "";
     });
 
     // Clean up on unmount
