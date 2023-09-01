@@ -16,7 +16,6 @@ export const getFirestoreConn = () => {
   if (!firestore) {
     const app = initializeApp(firebaseConfig);
     firestore = getFirestore(app);
-    console.log(firebaseConfig);
   }
 
   return firestore;

@@ -20,7 +20,6 @@ const Map = () => {
     setLoading(true);
 
     const res = await findAllLocations();
-    console.log(res);
 
     setLocations([...res]);
     setLoading(false);
@@ -125,12 +124,12 @@ const Map = () => {
 
     // Clean up on unmount
     return () => map.remove();
-  }, [locations]);
+  }, []);
 
   return (
     <div>
       <div ref={mapContainerRef} className="map-container" />
-      <Legend />
+      <Legend locations={locations} />
     </div>
   );
 };

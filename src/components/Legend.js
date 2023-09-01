@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Legend = () => {
+const getDaysAgo = (time) => {
+  return Math.floor((Date.now() / 1000 - time) / (24 * 60 * 60));
+};
+
+const findLastVisited = (locations) => {
+  let maxTimeStamp = 0;
+  let lastVisited = null;
+
+  for (let location of locations) {
+    if (location.timestamp.seconds > maxTimeStamp) {
+      maxTimeStamp = location.timestamp.seconds;
+      lastVisited = location;
+    }
+  }
+
+  return {
+    lastVisited: lastVisited.location,
+    daysAgo: getDaysAgo(lastVisited.timestamp.seconds),
+  };
+};
+
+const Legend = (props) => {
+  const [lastLocation, setLastLocation] = useState(null);
+  const [daysAgo, setDaysAgo] = useState(null);
+
+  useEffect(() => {
+    const { lastVisited, daysAgo } = findLastVisited(props.locations);
+    setLastLocation(lastVisited);
+    setDaysAgo(daysAgo);
+  }, [props.locations]);
+
   return (
-    <>
-      <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
-        <div className="mb6">
-          <h2 className="txt-bold txt-s block">Legend title</h2>
-          <p className="txt-s color-gray">Legend description</p>
-        </div>
+    <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
+      <div className="mb6">
+        <h2 className="txt-bold txt-s block">Last place visited</h2>
+        <p className="txt-s color-gray">{lastLocation}</p>
+        <p className="txt-s color-gray">{daysAgo} days ago</p>
       </div>
-    </>
+    </div>
   );
 };
 
