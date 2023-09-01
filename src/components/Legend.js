@@ -16,8 +16,8 @@ const findLastVisited = (locations) => {
   }
 
   return {
-    lastVisited: lastVisited.location,
-    daysAgo: getDaysAgo(lastVisited.timestamp.seconds),
+    lastVisited: lastVisited ? lastVisited.location : null,
+    daysAgo: lastVisited ? getDaysAgo(lastVisited.timestamp.seconds) : null,
   };
 };
 

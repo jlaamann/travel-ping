@@ -124,7 +124,7 @@ const Map = () => {
 
     // Clean up on unmount
     return () => map.remove();
-  }, []);
+  }, [locations]);
 
   return (
     <div>
