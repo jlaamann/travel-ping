@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import Legend from './components/Legend';
-import Optionsfield from './components/Optionsfield';
-import './Map.css';
-import { setActiveOption } from './redux/action-creators';
-import { useSelector } from 'react-redux';
-import { activeSelector, dataSelector } from './redux/selectors';
+import React, { useRef, useEffect, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import Legend from "./components/Legend";
+import Optionsfield from "./components/Optionsfield";
+import "./Map.css";
+import { setActiveOption } from "./redux/action-creators";
+import { useSelector } from "react-redux";
+import { activeSelector, dataSelector } from "./redux/selectors";
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+  "pk.eyJ1IjoiY2hrY2hrY2hrb29oIiwiYSI6ImNsbHpkd3hzeDBoajIzZW4xZGF1MDVrdmcifQ.u-XvGRBRX0_ZUB8bRyT9Mg";
 
 const Map = () => {
   const active = useSelector(activeSelector);
@@ -20,46 +20,59 @@ const Map = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: "mapbox://styles/chkchkchkooh/cllzdmzqi00o001qxgwjg8t6p",
       center: [5, 34],
       zoom: 1.5,
     });
 
-    map.on('load', () => {
-      map.addSource('countries', {
-        type: 'geojson',
-        data: data,
-      });
+    const images = {
+      popup:
+        "https://as2.ftcdn.net/v2/jpg/00/97/58/97/1000_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg",
+    };
 
-      map.setLayoutProperty('country-label', 'text-field', [
-        'format',
-        ['get', 'name_en'],
-        { 'font-scale': 1.2 },
-        '\n',
-        {},
-        ['get', 'name'],
-        {
-          'font-scale': 0.8,
-          'text-font': [
-            'literal',
-            ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
-          ],
-        },
-      ]);
-
-      map.addLayer(
-        {
-          id: 'countries',
-          type: 'fill',
-          source: 'countries',
-        },
-        'country-label'
+    map.on("load", () => {
+      map.loadImage(
+        "https://as2.ftcdn.net/v2/jpg/00/97/58/97/1000_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg",
+        function (error, image) {
+          if (error) throw error;
+          map.addImage("custom-marker", image);
+          // Add a GeoJSON source with multiple points
+          map.addSource("points", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: [
+                {
+                  type: "Feature",
+                  properties: {
+                    message: "Foo",
+                    iconSize: [60, 60],
+                  },
+                  geometry: {
+                    type: "Point",
+                    coordinates: [0, 50],
+                  },
+                },
+              ],
+            },
+          });
+          // Add a symbol layer
+          map.addLayer({
+            id: "points",
+            type: "symbol",
+            source: "points",
+            layout: {
+              "icon-image": "custom-marker",
+              "icon-size": 0.1,
+              // get the title name from the source's "title" property
+              "text-field": ["get", "title"],
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 1.25],
+              "text-anchor": "top",
+            },
+          });
+        }
       );
-
-      map.setPaintProperty('countries', 'fill-color', {
-        property: active.property,
-        stops: active.stops,
-      });
 
       setMap(map);
     });
@@ -74,10 +87,7 @@ const Map = () => {
 
   const paint = () => {
     if (map) {
-      map.setPaintProperty('countries', 'fill-color', {
-        property: active.property,
-        stops: active.stops,
-      });
+      // TODO: leaving it here, might be useful
     }
   };
 
