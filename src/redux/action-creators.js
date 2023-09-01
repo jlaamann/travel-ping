@@ -1,6 +1,5 @@
-import { store } from './store';
-import { setActiveOptionAction } from './reducer';
+import { store } from "./store";
 
-export function setActiveOption(option) {
-  store.dispatch(setActiveOptionAction(option));
-}
+// export function setActiveOption(option) {
+//   store.dispatch(setActiveOptionAction(option));
+// }

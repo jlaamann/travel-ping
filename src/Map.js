@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import Legend from "./components/Legend";
-import Optionsfield from "./components/Optionsfield";
 import "./Map.css";
 import { setActiveOption } from "./redux/action-creators";
 import { useSelector } from "react-redux";
@@ -23,6 +22,7 @@ const Map = () => {
       style: "mapbox://styles/chkchkchkooh/cllzdmzqi00o001qxgwjg8t6p",
       center: [5, 34],
       zoom: 1.5,
+      projection: "mercator",
     });
 
     const images = {
@@ -95,7 +95,6 @@ const Map = () => {
     <div>
       <div ref={mapContainerRef} className="map-container" />
       <Legend />
-      <Optionsfield changeState={setActiveOption} />
     </div>
   );
 };
