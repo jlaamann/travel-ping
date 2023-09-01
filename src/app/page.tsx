@@ -3,7 +3,7 @@ import PhotoMap from "./components/photo-map";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <Head>
         <link
           href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css"
