@@ -1,21 +1,40 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import { addDoc, collection } from "@firebase/firestore";
+import { getFirestoreConn } from "./firebase";
 import Legend from "./components/Legend";
 import "./Map.css";
-import { setActiveOption } from "./redux/action-creators";
 import { useSelector } from "react-redux";
 import { activeSelector, dataSelector } from "./redux/selectors";
 
-import markerImage from "./assets/marker_map_icon.png";
+import markerImage from "./assets/heart_icon.png";
+import { findAllLocations } from "./services/locations";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY2hrY2hrY2hrb29oIiwiYSI6ImNsbHpkd3hzeDBoajIzZW4xZGF1MDVrdmcifQ.u-XvGRBRX0_ZUB8bRyT9Mg";
 
 const Map = () => {
   const active = useSelector(activeSelector);
-  const data = useSelector(dataSelector);
+
+  const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
+
+  const fetchData = async () => {
+    setLoading(true);
+
+    const res = await findAllLocations();
+    console.log(res);
+
+    setLocations([...res]);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -23,32 +42,9 @@ const Map = () => {
       container: mapContainerRef.current,
       style: "mapbox://styles/chkchkchkooh/cllzdmzqi00o001qxgwjg8t6p",
       center: [5, 34],
-      zoom: 1.5,
-      projection: "mercator",
+      zoom: 2,
+      // projection: "mercator",
     });
-
-    const locations = [
-      {
-        coordinates: [-0.118092, 51.509865],
-        imageUrl:
-          "https://images.contentstack.io/v3/assets/blt00454ccee8f8fe6b/bltf5fca6a3eec4d180/6139d40bec680b43eb02a9ee/US_London_UK_Header.jpg?width=1920&quality=70&auto=webp",
-        description: "Having a blast in London, long live the queen",
-        timestamp: "12/9/2023",
-      },
-      {
-        coordinates: [-99, 19],
-        imageUrl:
-          "https://assets3.thrillist.com/v1/image/3141329/2880x1620/crop;webp=auto;jpeg_quality=60;progressive.jpg",
-        description: "Drank too many glasses of mezcal yesterday",
-        timestamp: "23/3/2023",
-      },
-      {
-        coordinates: [115, -8],
-        imageUrl: "https://balicheapesttours.com/dummy/ubud.jpg",
-        description: "Finding myself in Ubud",
-        timestamp: "10/2/2023",
-      },
-    ];
 
     map.on("load", () => {
       map.loadImage(markerImage, function (error, image) {
@@ -63,14 +59,13 @@ const Map = () => {
               ({ coordinates, imageUrl, description, timestamp }) => ({
                 type: "Feature",
                 properties: {
-                  message: "Foo",
                   description,
                   imageUrl,
                   timestamp,
                 },
                 geometry: {
                   type: "Point",
-                  coordinates,
+                  coordinates: [coordinates._long, coordinates._lat],
                 },
               })
             ),
@@ -109,7 +104,15 @@ const Map = () => {
       }
 
       const imageHtml = `<img src="${e.features[0].properties.imageUrl}">`;
-      const timestampHtml = `<i>${e.features[0].properties.timestamp}</i>`;
+      const formattedTimestamp = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(e.features[0].properties.timestamp.seconds);
+      const timestampHtml = `<i>${formattedTimestamp}</i>`;
 
       new mapboxgl.Popup({ closeButton: false })
         .setLngLat(coordinates)
@@ -128,7 +131,7 @@ const Map = () => {
 
     // Clean up on unmount
     return () => map.remove();
-  }, []);
+  }, [locations]);
 
   useEffect(() => {
     paint();
