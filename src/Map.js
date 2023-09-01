@@ -1,11 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import { addDoc, collection } from "@firebase/firestore";
-import { getFirestoreConn } from "./firebase";
 import Legend from "./components/Legend";
 import "./Map.css";
-import { useSelector } from "react-redux";
-import { activeSelector, dataSelector } from "./redux/selectors";
 
 import markerImage from "./assets/heart_icon.png";
 import { findAllLocations } from "./services/locations";
@@ -14,8 +10,6 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiY2hrY2hrY2hrb29oIiwiYSI6ImNsbHpkd3hzeDBoajIzZW4xZGF1MDVrdmcifQ.u-XvGRBRX0_ZUB8bRyT9Mg";
 
 const Map = () => {
-  const active = useSelector(activeSelector);
-
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -132,16 +126,6 @@ const Map = () => {
     // Clean up on unmount
     return () => map.remove();
   }, [locations]);
-
-  useEffect(() => {
-    paint();
-  }, [active]);
-
-  const paint = () => {
-    if (map) {
-      // TODO: leaving it here, might be useful
-    }
-  };
 
   return (
     <div>

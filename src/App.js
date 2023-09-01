@@ -1,15 +1,11 @@
-import React from 'react';
-import Map from './Map';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import React from "react";
+import Map from "./Map";
 
 function App() {
   return (
-    <Provider store={store}>
-      <div>
-        <Map />
-      </div>
-    </Provider>
+    <div>
+      <Map />
+    </div>
   );
 }
 
