@@ -1,14 +1,11 @@
-## Data overlay example (with [redux](https://www.npmjs.com/package/redux))
+## travel-ping
 
-Add a data overlay to a map via React and use controls to visualize it differently.
+Show places where I've been recently.
 
-![Demo gif](https://i.imgur.com/FiqNRfZ.gif)
+![Demo gif](todo)
 
 ### Run it
 
-    git clone https://github.com/mapbox/mapbox-react-examples.git
-
-    cd mapbox-react-examples/data-overlay-redux
     npm install
     npm start
 
@@ -21,5 +18,3 @@ Add a data overlay to a map via React and use controls to visualize it different
 Replace the [API key](https://docs.mapbox.com/help/getting-started/access-tokens/) in `src/Map.js`.
 
 Runs the app from http://localhost:3000
-
-Data provided by [Natural Earth](http://www.naturalearthdata.com/).
