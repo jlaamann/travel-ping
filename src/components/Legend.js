@@ -34,7 +34,7 @@ const Legend = (props) => {
   return (
     <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
       <div className="mb6">
-        <h2 className="txt-bold txt-s block">Last place visited</h2>
+        <h2 className="txt-bold txt-s block">Last location visited</h2>
         <p className="txt-s color-gray">{lastLocation}</p>
         <p className="txt-s color-gray">{daysAgo} days ago</p>
       </div>
