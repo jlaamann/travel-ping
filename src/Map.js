@@ -6,6 +6,8 @@ import { setActiveOption } from "./redux/action-creators";
 import { useSelector } from "react-redux";
 import { activeSelector, dataSelector } from "./redux/selectors";
 
+import markerImage from "./assets/marker_map_icon.png";
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY2hrY2hrY2hrb29oIiwiYSI6ImNsbHpkd3hzeDBoajIzZW4xZGF1MDVrdmcifQ.u-XvGRBRX0_ZUB8bRyT9Mg";
 
@@ -25,54 +27,45 @@ const Map = () => {
       projection: "mercator",
     });
 
-    const images = {
-      popup:
-        "https://as2.ftcdn.net/v2/jpg/00/97/58/97/1000_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg",
-    };
-
     map.on("load", () => {
-      map.loadImage(
-        "https://as2.ftcdn.net/v2/jpg/00/97/58/97/1000_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg",
-        function (error, image) {
-          if (error) throw error;
-          map.addImage("custom-marker", image);
-          // Add a GeoJSON source with multiple points
-          map.addSource("points", {
-            type: "geojson",
-            data: {
-              type: "FeatureCollection",
-              features: [
-                {
-                  type: "Feature",
-                  properties: {
-                    message: "Foo",
-                    iconSize: [60, 60],
-                  },
-                  geometry: {
-                    type: "Point",
-                    coordinates: [0, 50],
-                  },
+      map.loadImage(markerImage, function (error, image) {
+        if (error) throw error;
+        map.addImage("custom-marker", image);
+        // Add a GeoJSON source with multiple points
+        map.addSource("points", {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                properties: {
+                  message: "Foo",
                 },
-              ],
-            },
-          });
-          // Add a symbol layer
-          map.addLayer({
-            id: "points",
-            type: "symbol",
-            source: "points",
-            layout: {
-              "icon-image": "custom-marker",
-              "icon-size": 0.1,
-              // get the title name from the source's "title" property
-              "text-field": ["get", "title"],
-              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-              "text-offset": [0, 1.25],
-              "text-anchor": "top",
-            },
-          });
-        }
-      );
+                geometry: {
+                  type: "Point",
+                  coordinates: [-0.118092, 51.509865],
+                },
+              },
+            ],
+          },
+        });
+        // Add a symbol layer
+        map.addLayer({
+          id: "points",
+          type: "symbol",
+          source: "points",
+          layout: {
+            "icon-image": "custom-marker",
+            "icon-size": 0.08,
+            // get the title name from the source's "title" property
+            "text-field": ["get", "title"],
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-offset": [0, 1.25],
+            "text-anchor": "top",
+          },
+        });
+      });
 
       setMap(map);
     });
