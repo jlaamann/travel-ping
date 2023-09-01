@@ -33,17 +33,20 @@ const Map = () => {
         imageUrl:
           "https://images.contentstack.io/v3/assets/blt00454ccee8f8fe6b/bltf5fca6a3eec4d180/6139d40bec680b43eb02a9ee/US_London_UK_Header.jpg?width=1920&quality=70&auto=webp",
         description: "Having a blast in London, long live the queen",
+        timestamp: "12/9/2023",
       },
       {
         coordinates: [-99, 19],
         imageUrl:
           "https://assets3.thrillist.com/v1/image/3141329/2880x1620/crop;webp=auto;jpeg_quality=60;progressive.jpg",
-        description: "Drank to many glasses of mezcal yesterday",
+        description: "Drank too many glasses of mezcal yesterday",
+        timestamp: "23/3/2023",
       },
       {
         coordinates: [115, -8],
         imageUrl: "https://balicheapesttours.com/dummy/ubud.jpg",
         description: "Finding myself in Ubud",
+        timestamp: "10/2/2023",
       },
     ];
 
@@ -57,12 +60,13 @@ const Map = () => {
           data: {
             type: "FeatureCollection",
             features: locations.map(
-              ({ coordinates, imageUrl, description }) => ({
+              ({ coordinates, imageUrl, description, timestamp }) => ({
                 type: "Feature",
                 properties: {
                   message: "Foo",
                   description,
                   imageUrl,
+                  timestamp,
                 },
                 geometry: {
                   type: "Point",
@@ -105,10 +109,11 @@ const Map = () => {
       }
 
       const imageHtml = `<img src="${e.features[0].properties.imageUrl}">`;
+      const timestampHtml = `<i>${e.features[0].properties.timestamp}</i>`;
 
-      new mapboxgl.Popup()
+      new mapboxgl.Popup({ closeButton: false })
         .setLngLat(coordinates)
-        .setHTML(imageHtml + description)
+        .setHTML(imageHtml + description + "</br>" + timestampHtml)
         .addTo(map);
     });
 
