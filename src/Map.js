@@ -39,6 +39,9 @@ const Map = () => {
       // projection: "mercator",
     });
 
+    mapboxgl.workerClass =
+      require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+
     map.on("load", () => {
       map.loadImage(markerImage, function (error, image) {
         if (error) throw error;
