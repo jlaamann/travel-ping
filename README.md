@@ -6,7 +6,7 @@ You can play around with it here https://micro-geode-397720.web.app/
 
 It is built on React, Mapbox, Firebase and Google Cloud Storage.
 
-![Demo gif](./screens/travelping.gif)
+![Demo gif](./screens/screenshot.png)
 
 ### Run it
 
