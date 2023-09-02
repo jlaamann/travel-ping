@@ -66,6 +66,7 @@ const Map = () => {
             ),
           },
         });
+
         // Add a symbol layer
         map.addLayer({
           id: "points",
@@ -99,6 +100,7 @@ const Map = () => {
       }
 
       const imageHtml = `<img src="${e.features[0].properties.imageUrl}">`;
+      const timestampJson = JSON.parse(e.features[0].properties.timestamp);
       const formattedTimestamp = new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "numeric",
@@ -106,7 +108,7 @@ const Map = () => {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-      }).format(e.features[0].properties.timestamp.seconds);
+      }).format(timestampJson.seconds * 1000);
       const timestampHtml = `<i>${formattedTimestamp}</i>`;
 
       new mapboxgl.Popup({ closeButton: false })
