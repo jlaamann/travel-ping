@@ -4,6 +4,8 @@ An interactive map that shows places where I've been recently.
 
 You can play around with it here https://micro-geode-397720.web.app/
 
+It is built on React, Mapbox, Firebase and Google Cloud Storage.
+
 ![Demo gif](./screens/travelping.gif)
 
 ### Run it
