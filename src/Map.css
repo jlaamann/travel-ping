@@ -5,3 +5,11 @@
   left: 0;
   right: 0;
 }
+
+.mapboxgl-ctrl-logo {
+  visibility: hidden;
+}
+
+.mapboxgl-ctrl-attrib {
+  visibility: hidden;
+}
