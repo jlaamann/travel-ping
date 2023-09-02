@@ -8,6 +8,8 @@ const findLastVisited = (locations) => {
   let maxTimeStamp = 0;
   let lastVisited = null;
 
+  console.log(locations);
+
   for (let location of locations) {
     if (location.timestamp.seconds > maxTimeStamp) {
       maxTimeStamp = location.timestamp.seconds;
