@@ -4,7 +4,7 @@ An interactive map that shows places where I've been recently.
 
 You can play around with it here https://micro-geode-397720.web.app/
 
-![Demo gif](./screens/travel_ping.gif)
+![Demo gif](./screens/travelping.gif)
 
 ### Run it
 
