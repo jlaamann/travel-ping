@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import Legend from "./components/Legend";
 import "./Map.css";
 
@@ -38,9 +40,6 @@ const Map = () => {
       zoom: 2,
       // projection: "mercator",
     });
-
-    mapboxgl.workerClass =
-      require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
     map.on("load", () => {
       map.loadImage(markerImage, function (error, image) {
