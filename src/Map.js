@@ -4,6 +4,7 @@ mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import Legend from "./components/Legend";
 import "./Map.css";
+import logo from "./assets/logo.png";
 
 import markerImage from "./assets/heart_icon.png";
 import { findAllLocations } from "./services/locations";
@@ -105,9 +106,6 @@ const Map = () => {
         year: "numeric",
         month: "numeric",
         day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
       }).format(timestampJson.seconds * 1000);
       const timestampHtml = `<i>${formattedTimestamp}</i>`;
 
@@ -134,6 +132,9 @@ const Map = () => {
     <div>
       <div ref={mapContainerRef} className="map-container" />
       <Legend locations={locations} />
+      <div className="bg-transparent absolute top left mr12 mb24 py12 px12 z1 wmax180">
+        <img src={logo} />
+      </div>
     </div>
   );
 };
